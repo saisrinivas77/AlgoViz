@@ -1,0 +1,9 @@
+{
+  "name": "@algoviz/api",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "python main.py",
+    "test": "python -m pytest"
+  }
+}

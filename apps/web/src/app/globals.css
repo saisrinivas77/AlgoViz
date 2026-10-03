@@ -1,0 +1,459 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Design tokens ─────────────────────────────────────────────────────────── */
+:root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace;
+
+  /* ── Light mode (default, homepage) ─────────── */
+  --bg-page:          #F5F4F0;
+  --bg-surface:       #FFFFFF;
+  --bg-surface-muted: #EDECE8;
+  --bg-raised:        #F0EFE9;
+
+  --fg-primary:       #1C1C1A;
+  --fg-secondary:     #5C5C58;
+  --fg-tertiary:      #8C8C87;
+  --fg-disabled:      #B4B4AE;
+
+  --border:           #DDDDD8;
+  --border-strong:    #C4C4BE;
+
+  /* ── Dark surfaces (code panels, dark sections) ─ */
+  --bg-code:          #141412;
+  --bg-code-surface:  #1E1E1C;
+  --bg-code-raised:   #252522;
+  --fg-code-primary:  #E8E6E0;
+  --fg-code-secondary:#9E9E98;
+  --fg-code-muted:    #5E5E58;
+  --border-code:      #2E2E2C;
+  --border-code-strong:#3E3E3A;
+
+  /* ── Semantic accents ────────────────────────── */
+  --accent-amber:     #B45309;
+  --accent-amber-bg:  rgba(180, 83, 9, 0.08);
+  --accent-amber-border: rgba(180, 83, 9, 0.2);
+
+  --accent-green:     #2D6A30;
+  --accent-green-bg:  rgba(45, 106, 48, 0.08);
+  --accent-green-border: rgba(45, 106, 48, 0.2);
+
+  --accent-red:       #B91C1C;
+  --accent-red-bg:    rgba(185, 28, 28, 0.08);
+
+  --accent-stone:     #78716C;
+
+  /* ── Easing ──────────────────────────────────── */
+  --ease-smooth:      cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-expo:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:      cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Spacing rhythm ──────────────────────────── */
+  --section-py: clamp(80px, 10vw, 140px);
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  color: var(--fg-primary);
+  background: var(--bg-page);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  font-feature-settings: 'cv01', 'cv02', 'cv03', 'cv04';
+}
+
+/* Playground has its own bg via inline hardcoded hex — body default is fine */
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--fg-tertiary); }
+
+/* ─── Typography utilities ───────────────────────────────────────────────────── */
+.font-display {
+  font-family: var(--font-sans);
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  font-feature-settings: 'cv01', 'cv02';
+}
+
+.font-heading {
+  font-family: var(--font-sans);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.font-mono-custom {
+  font-family: var(--font-mono);
+}
+
+/* ─── Section rhythm ─────────────────────────────────────────────────────────── */
+.section-light {
+  background: var(--bg-page);
+  color: var(--fg-primary);
+}
+
+.section-dark {
+  background: var(--bg-code);
+  color: var(--fg-code-primary);
+}
+
+/* ─── Code highlight for home page snippets ─────────────────────────────────── */
+.code-line {
+  display: block;
+  padding: 1px 8px;
+  border-radius: 2px;
+  transition: background 0.12s ease, border-color 0.12s ease;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  border-left: 2px solid transparent;
+}
+
+.code-line.highlighted {
+  background: rgba(180, 83, 9, 0.1);
+  border-left-color: var(--accent-amber);
+  color: #F5E6D0;
+}
+
+/* ─── Window chrome ──────────────────────────────────────────────────────────── */
+.window-chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg-code-raised);
+  border-bottom: 1px solid var(--border-code);
+}
+
+.window-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.window-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.window-dot-red   { background: #3E2020; }
+.window-dot-amber { background: #3E3220; }
+.window-dot-green { background: #1E3020; }
+
+/* ─── Monaco / Editor ────────────────────────────────────────────────────────── */
+.monaco-editor .editor-line-highlight {
+  background: rgba(180, 83, 9, 0.22) !important;
+  border-left: 3px solid #f59e0b !important;
+  box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.2) !important;
+}
+.monaco-editor .editor-glyph-highlight {
+  background: #f59e0b !important;
+  border-radius: 50%;
+  width: 9px !important;
+  height: 9px !important;
+  margin-left: 4px;
+  margin-top: 6px;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+}
+
+/* ─── Timeline range input ───────────────────────────────────────────────────── */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  border-radius: 9999px;
+  outline: none;
+  cursor: pointer;
+  background: var(--border-code-strong);
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--fg-code-primary);
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+input[type='range']::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+input[type='range']::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--fg-code-primary);
+  cursor: pointer;
+  border: none;
+}
+
+/* ─── Navigation ─────────────────────────────────────────────────────────────── */
+.nav-link {
+  position: relative;
+  color: var(--fg-secondary);
+  transition: color 0.2s ease;
+}
+.nav-link:hover {
+  color: var(--fg-primary);
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--fg-primary);
+  transition: width 0.22s var(--ease-smooth);
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Dark context nav links */
+.nav-link-dark {
+  position: relative;
+  color: var(--fg-code-secondary);
+  transition: color 0.2s ease;
+}
+.nav-link-dark:hover {
+  color: var(--fg-code-primary);
+}
+.nav-link-dark::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--fg-code-primary);
+  transition: width 0.22s var(--ease-smooth);
+}
+.nav-link-dark:hover::after {
+  width: 100%;
+}
+
+/* ─── Focus visible ──────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--fg-primary);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--fg-primary);
+  color: var(--bg-surface);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: background 0.15s ease, transform 0.1s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-primary:hover {
+  background: #2E2E2A;
+  transform: translateY(-1px);
+}
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: transparent;
+  color: var(--fg-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid var(--border-strong);
+  transition: color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-ghost:hover {
+  color: var(--fg-primary);
+  border-color: var(--fg-primary);
+  transform: translateY(-1px);
+}
+
+/* Dark variant */
+.btn-primary-dark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--fg-code-primary);
+  color: var(--bg-code);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-primary-dark:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.btn-ghost-dark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: transparent;
+  color: var(--fg-code-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid var(--border-code-strong);
+  transition: color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-ghost-dark:hover {
+  color: var(--fg-code-primary);
+  border-color: var(--fg-code-secondary);
+  transform: translateY(-1px);
+}
+
+/* ─── Subtle background grid ─────────────────────────────────────────────────── */
+.bg-grid-light {
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.5;
+}
+
+.bg-grid-dark {
+  background-image:
+    linear-gradient(var(--border-code) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-code) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.7;
+}
+
+/* ─── Section separator ──────────────────────────────────────────────────────── */
+.section-sep {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+}
+
+.section-sep-dark {
+  width: 100%;
+  height: 1px;
+  background: var(--border-code);
+}
+
+/* ─── Running indicator ──────────────────────────────────────────────────────── */
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.animate-cursor { animation: blink-cursor 1.1s ease-in-out infinite; }
+
+@keyframes run-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.animate-run-pulse { animation: run-pulse 1.5s ease-in-out infinite; }
+
+/* ─── Array bar transitions ──────────────────────────────────────────────────── */
+@keyframes bar-compare {
+  0% { transform: scaleY(1); }
+  50% { transform: scaleY(1.04); }
+  100% { transform: scaleY(1); }
+}
+.bar-compare { animation: bar-compare 0.3s ease-in-out; }
+
+/* ─── Perspective card effect ────────────────────────────────────────────────── */
+.perspective-card {
+  transform-style: preserve-3d;
+  transform: perspective(1400px) rotateX(2deg) rotateY(-3deg);
+  transition: transform 0.5s var(--ease-smooth);
+}
+.perspective-card:hover {
+  transform: perspective(1400px) rotateX(0.5deg) rotateY(-0.5deg);
+}
+
+/* ─── Data structure item hover ──────────────────────────────────────────────── */
+.ds-item {
+  transition: background 0.18s ease, border-color 0.18s ease;
+  border-left: 3px solid transparent;
+}
+.ds-item:hover {
+  background: var(--bg-surface-muted);
+  border-left-color: var(--accent-stone);
+}
+.ds-item.active {
+  background: var(--bg-raised);
+  border-left-color: var(--accent-amber);
+}
+
+/* ─── Code syntax colors (dark context) ─────────────────────────────────────── */
+.syn-keyword   { color: #C8956C; }
+.syn-function  { color: #D4A76A; }
+.syn-string    { color: #88B06A; }
+.syn-comment   { color: var(--fg-code-muted); font-style: italic; }
+.syn-number    { color: #9DCBCB; }
+.syn-operator  { color: var(--fg-code-secondary); }
+.syn-default   { color: var(--fg-code-secondary); }
+.syn-active    { color: var(--fg-code-primary); }
+
+/* ─── Reduced motion ─────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .perspective-card {
+    transform: none !important;
+  }
+}
+
+/* ─── Legacy Tailwind token support (keep for playground compatibility) ─────── */
+/* These override the Tailwind color tokens so playground still works */
+.bg-background { background-color: #141412 !important; }
+.bg-surface    { background-color: #1E1E1C !important; }
+.bg-surface-secondary { background-color: #252522 !important; }
+.text-text     { color: #E8E6E0 !important; }
+.text-muted    { color: #9E9E98 !important; }
+.border-border { border-color: #2E2E2C !important; }
+
+/* ─── Playground accent (keep indigo for code editor, it fits code context) ─── */
+.accent-indigo-context {
+  --tw-ring-color: rgba(99, 102, 241, 0.5);
+}

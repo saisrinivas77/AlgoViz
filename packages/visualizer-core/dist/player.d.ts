@@ -1,0 +1,34 @@
+import { DVIRExecutionTrace, DryRunTable, Diagnostic, ComplexityAnalysis } from "@algoviz/dvir";
+import { ReplayStateSnapshot } from "./visualizers/array.js";
+export type TracePlayerListener = (snapshot: ReplayStateSnapshot) => void;
+export declare class TracePlayer {
+    private trace;
+    private currentStep;
+    private isPlaying;
+    private speed;
+    private timerId;
+    private listeners;
+    private snapshots;
+    private dryRunTable;
+    loadTrace(trace: DVIRExecutionTrace): void;
+    subscribe(listener: TracePlayerListener): () => void;
+    getSnapshot(): ReplayStateSnapshot;
+    getTrace(): DVIRExecutionTrace | null;
+    getDryRunTable(): DryRunTable;
+    getDiagnostics(): Diagnostic[];
+    getComplexity(): ComplexityAnalysis | null;
+    play(): void;
+    private scheduleNext;
+    pause(): void;
+    next(): void;
+    previous(): void;
+    first(): void;
+    last(): void;
+    seek(stepIndex: number): void;
+    setSpeed(speed: number): void;
+    getIsPlaying(): boolean;
+    getSpeed(): number;
+    getCurrentStep(): number;
+    getTotalSteps(): number;
+    private notify;
+}
